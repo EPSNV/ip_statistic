@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ template "title" . }}</title>
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container p-3 mb-3">
+            <ul class="nav nav-tabs">
+                {{range .Menu}}
+                <li class="nav-item">
+                    <a class="nav-link {{if eq $.ActiveMenu .URL}}active{{end}}" href="{{.URL}}">
+                        {{.Name}}</a>
+                </li>
+                {{end}}
+            </ul>
+        </div>
+        <div class="container">
+            {{ template "content" . }}
+        </div>
+    </body>
+</html>

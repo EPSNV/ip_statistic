@@ -1,0 +1,34 @@
+{{ define "title"}}Продажа{{end}}
+
+{{ define "content" }}
+<form method="post" action="/sell">
+    <table class="table">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>Название</th>
+              <th>Цена</th>
+              <th>На складе</th>
+              <th>Количество</th>
+            </tr>
+          </thead>
+          <tbody id="items">
+            {{range .Page.Items}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Price}}</td>
+                <td>{{.StoreCount}}</td>
+                <td>
+                    <input type="hidden" name="ids" value="{{.ID}}" />
+                    <input type="text" name="cnts" placeholder="Кол-во" value="" />
+                </td>
+            </tr>
+            {{end}}
+          </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Оформить заказ</button>
+
+</form>
+{{ end }}

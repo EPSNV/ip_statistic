@@ -1,0 +1,16 @@
+{{ define "title"}}Обновление цены{{end}}
+
+{{ define "content" }}
+<form method="post" action="/edit">
+    <input type="hidden" name="id" value="{{.Page.ID}}" />
+    <div class="form-group">
+        <label for="itemName">Название товара</label>
+        <input readonly type="text" class="form-control-plaintext" id="itemName" name="itemName" value="{{.Page.ItemName}}">
+    </div>
+    <div class="form-group">
+        <label for="price">Цена</label>
+        <input type="text" class="form-control" name="price" placeholder="Введите цену" value="{{.Page.Price}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Обновить цену</button>
+</form>            
+{{ end }}

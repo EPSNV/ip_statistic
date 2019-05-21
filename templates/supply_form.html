@@ -1,0 +1,16 @@
+{{ define "title"}}Добавление товара{{end}}
+
+{{ define "content" }}
+<form method="post" action="/supply">
+    <div class="form-group">
+        <label for="itemName">Название товара</label>
+        <input type="text" class="form-control" id="itemName" name="itemName" placeholder="Введите название">
+        <small id="itemNameHelp" class="form-text text-muted">Как товар будет называться на сайте</small>
+    </div>
+    <div class="form-group">
+        <label for="cnt">Количество</label>
+        <input type="text" class="form-control" name="cnt" placeholder="Введите количество">
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить на склад</button>
+</form>            
+{{ end }}

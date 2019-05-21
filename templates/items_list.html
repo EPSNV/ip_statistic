@@ -1,0 +1,72 @@
+{{ define "title"}}Список товаров{{end}}
+
+{{ define "content" }}
+    <table class="table">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>Название</th>
+              <th>Цена</th>
+              <th>На складе</th>
+              <th>Продано</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="items"></tbody>
+    </table>
+    <script>
+        var request = new XMLHttpRequest();
+        request.open('GET', '/api/v1/items', true);
+        request.onload = function() {
+            if (request.status != 200) {
+                alert("bad request status");
+                return;
+            }
+            var items = JSON.parse(request.responseText);
+            var itemsContainer = document.getElementById('items');
+            for(var i = 0; i < items.length;i++) {
+                item = items[i];
+                // dont do this!!! completly insecure to XSS
+                newNode = `<tr>
+                    <td>#${item.ID}</td>
+                    <td>${item.Name}</td>
+                    <td>${item.Price}</td>
+                    <td>${item.StoreCount}</td>
+                    <td>${item.Cnt} на ${item.Sum}</td>
+                    <td>
+                        <a href="/edit?id=${item.ID}" class="btn btn-primary">Редактировать</a>
+                        <span onclick="deleteItem(this, '${item.ID}')" class="btn btn-danger">Удалить</span>
+                    </td>
+                </tr>`;
+                var node = document.createElement("tr");
+                node.innerHTML = newNode;
+                itemsContainer.appendChild(node);
+            }
+        };
+        request.onerror = function() {alert("error!")};
+        request.send();
+
+        function deleteItem(elem, name) {
+            if(!confirm("вы увереены?")) {
+                return;
+            }
+            var request = new XMLHttpRequest();
+            request.open('DELETE', '/api/v1/items/delete?id='+name, true);
+            request.onload = function() {
+                if (request.status != 200) {
+                    alert("bad request status");
+                    return;
+                }
+                var result = JSON.parse(request.responseText);
+                if (result.status != 200) {
+                    alert("bad request" + result.error);
+                    return;
+                }
+                elem.parentNode.parentNode.remove();
+            };
+            request.onerror = function() {alert("error!")};
+            request.send();
+
+        }
+    </script>
+{{ end }}
