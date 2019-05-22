@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"net/http"
 
 	_ "github.com/lib/pq"
 )
@@ -11,8 +12,18 @@ type ipStore struct {
 	db *sql.DB
 }
 
+func (s *ipStore) Index(w http.ResponseWriter, r *http.Request) {
+	err := itemsListTmpl.Execute(w, &tplParams{
+		ActiveMenu: r.URL.String(),
+		Menu:       menu,
+	})
+	if err != nil {
+		http.Error(w, "error in template", 500)
+	}
+}
+
 func main() {
-	connStr := "user=root dbname=test password=root host=127.0.0.1 port=5432 sslmode=disable"
+	connStr := "user=root dbname=ip password=root host=127.0.0.1 port=5432 sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatalln("cant open db:", err)
