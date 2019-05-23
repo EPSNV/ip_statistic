@@ -195,6 +195,7 @@ func (s *Shop) SupplyProcessForm(w http.ResponseWriter, r *http.Request) {
 		query := `UPDATE products SET store_count = store_count + $1 WHERE id = $2`
 		_, err = s.db.Exec(query, cnt, productID)
 	} else {
+		INSERT
 		query := `INSERT INTO products("name", "store_count") VALUES($1, $2)`
 		_, err = s.db.Exec(query, inputItemName, cnt)
 	}

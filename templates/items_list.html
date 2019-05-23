@@ -1,14 +1,14 @@
-{{ define "title"}}Список товаров{{end}}
+{{ define "title"}}Список IP-адресов{{end}}
 
 {{ define "content" }}
     <table class="table">
         <thead>
             <tr>
               <th>#</th>
-              <th>Название</th>
-              <th>Цена</th>
-              <th>На складе</th>
-              <th>Продано</th>
+              <th>IP-адрес</th>
+              <th>Пользователь</th>
+              <th>Адрес</th>
+              <th>Описание</th>
               <th></th>
             </tr>
           </thead>
@@ -29,10 +29,10 @@
                 // dont do this!!! completly insecure to XSS
                 newNode = `<tr>
                     <td>#${item.ID}</td>
-                    <td>${item.Name}</td>
-                    <td>${item.Price}</td>
-                    <td>${item.StoreCount}</td>
-                    <td>${item.Cnt} на ${item.Sum}</td>
+                    <td>${item.IpAddress}</td>
+                    <td>${item.User}</td>
+                    <td>${item.Address}</td>
+                    <td>${item.Description}</td>
                     <td>
                         <a href="/edit?id=${item.ID}" class="btn btn-primary">Редактировать</a>
                         <span onclick="deleteItem(this, '${item.ID}')" class="btn btn-danger">Удалить</span>
