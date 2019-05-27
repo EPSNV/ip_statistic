@@ -9,6 +9,8 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/jmoiron/sqlx"
+
 	_ "github.com/lib/pq"
 )
 
@@ -60,20 +62,24 @@ func (s *ipStore) Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *ipStore) getItems() ([]*Item, error) {
+
 	items := []*Item{}
-	rows, err := s.db.Query("SELECT id, ip_address, user, address, description FROM ip140 ORDER BY id ASC")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		it := &Item{}
-		err := rows.Scan(&it.ID, &it.IpAddress, &it.User, &it.Address, &it.Description)
-		if err != nil {
-			return nil, err
-		}
-		items = append(items, it)
-	}
+	query := "SELECT id, name, price, cnt, sum, store_count FROM products ORDER BY id ASC"
+	s.db.Select(&items, query)
+
+	// rows, err := s.db.Query("SELECT id, ip_address, user, address, description FROM ip140 ORDER BY id ASC")
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer rows.Close()
+	// for rows.Next() {
+	// 	it := &Item{}
+	// 	err := rows.Scan(&it.ID, &it.IpAddress, &it.User, &it.Address, &it.Description)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	items = append(items, it)
+	// }
 	return items, nil
 }
 
@@ -92,7 +98,7 @@ func (s *ipStore) fillSubnet(ip IP)
 
 func main() {
 	connStr := "user=root dbname=ip password=root host=127.0.0.1 port=5432 sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
+	db, err := sqlx.Connect("postgres", connStr)
 	if err != nil {
 		log.Fatalln("cant open db:", err)
 	}
